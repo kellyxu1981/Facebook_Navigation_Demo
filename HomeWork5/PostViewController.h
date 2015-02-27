@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PostViewController : UIViewController
+@interface PostViewController : UIViewController <UITextFieldDelegate>
 @property (nonatomic,strong) NSString *profileThumbnailURL;
 @property (nonatomic,strong) NSString *postImageURL;
 @property (nonatomic,strong) NSString *nameString;

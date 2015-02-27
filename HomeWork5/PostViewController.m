@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeStamp;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *likeLabel;
+@property (weak, nonatomic) IBOutlet UITextField *postTextField;
 
 - (IBAction)onTap:(UITapGestureRecognizer *)sender;
 @end
@@ -24,6 +25,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardDidShowNotification object:nil];
     if (self) {
         // Custom initialization
     }
@@ -40,6 +43,7 @@
     self.nameLabel.text = self.nameString;
     [self.profileThumbnail setImageWithURL:self.profileThumbnailURL];
     [self.postImage setImageWithURL:self.postImageURL];
+    self.postTextField.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,8 +53,24 @@
 }
 
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    NSLog(@"begin typing");
+}
+
 
 - (IBAction)onTap:(UITapGestureRecognizer *)sender {
     [self.view endEditing:YES];
 }
+
+-(void)keyboardOnScreen:(NSNotification *)notification
+{
+    NSDictionary *info  = notification.userInfo;
+    NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect rawFrame      = [value CGRectValue];
+    CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
+    
+    NSLog(@"keyboardFrame: %@", NSStringFromCGRect(keyboardFrame));
+}
+
 @end
